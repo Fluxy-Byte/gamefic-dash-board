@@ -9,7 +9,7 @@ interface Result {
 
 export async function getContacts(waba_id: string): Promise<Result> {
     try {
-        const url = process.env.NEXT_API_URL_BACKEND ?? "https://fluxe-orquestrador.egnehl.easypanel.host";
+        const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.get(
             `${url}/api/v1/contacts?waba_id=${waba_id}`

@@ -15,12 +15,12 @@ interface ResultSimple {
 
 export async function getWabas(id: string): Promise<Result> {
     try {
-        const url = process.env.NEXT_API_URL_BACKEND ?? "https://fluxe-orquestrador.egnehl.easypanel.host";
+        const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.get(
             `${url}/api/v1/list-wabas?organization_id=${id}`
         )
-
+        console.log(data)
         return data;
     } catch (e: any) {
         console.error(e);
@@ -34,7 +34,7 @@ export async function getWabas(id: string): Promise<Result> {
 
 export async function createWaba(phone_number_id: string, display_phone_number: string, idOrganization: string, idAgente: number): Promise<ResultSimple> {
     try {
-        const url = process.env.NEXT_API_URL_BACKEND ?? "https://fluxe-orquestrador.egnehl.easypanel.host";
+        const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.post(
             `${url}/api/v1/waba`,
@@ -59,7 +59,7 @@ export async function createWaba(phone_number_id: string, display_phone_number: 
 
 export async function updateWaba(phone_number_id: string, display_phone_number: string, idOrganization: string, idAgente: number): Promise<ResultSimple> {
     try {
-        const url = process.env.NEXT_API_URL_BACKEND ?? "https://fluxe-orquestrador.egnehl.easypanel.host";
+        const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.put(
             `${url}/api/v1/waba?phone_number_id=${phone_number_id}`,

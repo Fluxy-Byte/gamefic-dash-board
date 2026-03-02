@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { MessageCircle, Zap } from "lucide-react"
+import { authClient } from "@/lib/auth-client"
 
 export default function SignUpPage() {
   const [name, setName] = useState("")
@@ -34,27 +35,22 @@ export default function SignUpPage() {
     setIsLoading(true)
 
     try {
-      const result = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
+      const result = await authClient.signUp.email({
+        email,
+        password,
+        name,
       })
 
-      const data = await result.json()
+      console.log(result)
 
-      if (!result.ok) {
-        setError(data.message || "Erro ao criar conta")
+      if (result.error) {
+        setError(result.error.message || "Erro ao criar conta")
       } else {
         router.push("/dashboard")
       }
     } catch (err) {
       setError("Erro ao criar conta. Tente novamente.")
+      console.log(err)
     } finally {
       setIsLoading(false)
     }

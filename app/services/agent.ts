@@ -15,7 +15,7 @@ interface ResultSimple {
 
 export async function getAgents(organization_id: string): Promise<Result> {
     try {
-        const url = process.env.NEXT_API_URL_BACKEND ?? "https://fluxe-orquestrador.egnehl.easypanel.host";
+        const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.get(
             `${url}/api/v1/agent?organization_id=${organization_id}`
@@ -35,7 +35,7 @@ export async function getAgents(organization_id: string): Promise<Result> {
 export async function createAgent(name: string, urlAgente: string, idOrganization: string): Promise<ResultSimple> {
     console.log(name, urlAgente, idOrganization)
     try {
-        const url = process.env.NEXT_API_URL_BACKEND ?? "https://fluxe-orquestrador.egnehl.easypanel.host";
+        const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.post(
             `${url}/api/v1/agent`,
@@ -59,7 +59,7 @@ export async function createAgent(name: string, urlAgente: string, idOrganizatio
 
 export async function updateAgent(name: string, urlAgente: string, mensagem: string, idOrganization: string, idAgente: string): Promise<ResultSimple> {
     try {
-        const url = process.env.NEXT_API_URL_BACKEND ?? "https://fluxe-orquestrador.egnehl.easypanel.host";
+        const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.put(
             `${url}/api/v1/agent?id_agent=${idAgente}`,

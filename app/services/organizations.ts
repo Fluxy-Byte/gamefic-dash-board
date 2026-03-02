@@ -15,7 +15,7 @@ export interface ResultFilter {
 
 export async function getOrganizations(): Promise<Result> {
     try {
-        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://fluxy.egnehl.easypanel.host";
+        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.get(
             `${url}/api/organization`,
@@ -37,7 +37,7 @@ export async function getOrganizations(): Promise<Result> {
 
 export async function getOrganizationsFilterWithId(id: string): Promise<ResultFilter> {
     try {
-        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://fluxy.egnehl.easypanel.host";
+        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.get(
             `${url}/api/organization/${id}`,
@@ -59,7 +59,7 @@ export async function getOrganizationsFilterWithId(id: string): Promise<ResultFi
 
 export async function createOrganizations(name: string, slug: string, logo: string): Promise<ResultFilter> {
     try {
-        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://fluxy.egnehl.easypanel.host";
+        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.post(
             `${url}/api/organization`,
@@ -86,7 +86,7 @@ export async function createOrganizations(name: string, slug: string, logo: stri
 
 export async function updateOrganizations(name: string, slug: string, idOrganization: string, logo: string): Promise<ResultFilter> {
     try {
-        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://fluxy.egnehl.easypanel.host";
+        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
         const { data } = await axios.put(
             `${url}/api/organization`,

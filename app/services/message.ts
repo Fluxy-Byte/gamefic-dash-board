@@ -20,7 +20,7 @@ export interface Message {
 export async function getMessage(idUser: string, idAgente: string): Promise<Result> {
     try {
         // const url = process.env.NEXT_API_URL_BACKEND ?? "https://fluxe-orquestrador.egnehl.easypanel.host";
-        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://fluxy.egnehl.easypanel.host";
+        const url = process.env.NEXT_PUBLIC_API_URL ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
         const urlTeste = `${url}/api/historico?user=${idUser}&agent=${idAgente}`
         console.log(urlTeste)
         const { data } = await axios.get(

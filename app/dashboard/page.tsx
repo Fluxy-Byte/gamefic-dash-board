@@ -51,6 +51,7 @@ import {
   Lightbulb,
   Phone,
   Mail,
+  Building2,
   Settings,
   LogOut,
   BarChart3,
@@ -95,7 +96,11 @@ export default function DashboardPage() {
     setIsLoadingWabas(true);
     try {
       const result = await getWabas(id);
+
       console.log(result)
+      let valor = 0
+      const contadorDeReunioes = result.wabas.map((w: Waba) => w.contactWabas?.map((cw) => { valor = valor + (cw.contact?.reunioesContato?.length ?? 0) }))
+      setCount(valor)
       setWabas(result.wabas);
     } catch (e) {
       console.error(e)
@@ -274,7 +279,7 @@ export default function DashboardPage() {
 
             <div className="space-y-6">
               {/* Main Selects Row */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
                 {/* Organization Select */}
                 <div className="space-y-3">
                   <label className="text-sm font-semibold text-foreground block">
@@ -352,16 +357,7 @@ export default function DashboardPage() {
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Total de Contatos</p>
                       <h3 className="text-4xl font-bold text-foreground">
-                        {
-                          waba.qtdContatos && (
-                            <span>{waba.qtdContatos}</span>
-                          )
-                        }
-                        {
-                          !waba.qtdContatos && (
-                            <span>0</span>
-                          )
-                        }
+                        <span>{waba.logContatoComAgente?.length ?? 0}</span>
                       </h3>
                     </div>
                     <div className="p-3 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-lg">
@@ -369,7 +365,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Número de contatos
+                    Número de contatos que o agente teve conversa
                   </p>
                 </div>
 
@@ -377,18 +373,9 @@ export default function DashboardPage() {
                 <div className="bg-card border border-purple-500/20 rounded-2xl p-6 backdrop-blur hover:border-purple-500/50 transition-colors">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Taxa de Conversão</p>
+                      <p className="text-sm text-muted-foreground mb-1">Número de Conversão</p>
                       <h3 className="text-4xl font-bold text-foreground">
-                        {
-                          waba.qtdConversao && (
-                            <span>{waba.qtdConversao}</span>
-                          )
-                        }
-                        {
-                          !waba.qtdConversao && (
-                            <span>0</span>
-                          )
-                        }
+                        <span>{count}</span>
                       </h3>
                     </div>
                     <div className="p-3 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-lg">
@@ -396,7 +383,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Número de conversão
+                    Número de conversão que o agente conseguiu
                   </p>
                 </div>
 
@@ -404,18 +391,9 @@ export default function DashboardPage() {
                 <div className="bg-card border border-purple-500/20 rounded-2xl p-6 backdrop-blur hover:border-purple-500/50 transition-colors">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">Engajamento</p>
+                      <p className="text-sm text-muted-foreground mb-1">Procentagem de Engajamento</p>
                       <h3 className="text-4xl font-bold text-foreground">
-                        {
-                          waba.qtdConversao && waba.qtdContatos && (
-                            <span>{Math.round(((waba.qtdConversao ?? 0) / (waba.qtdContatos ?? 0)) * 100)}%</span>
-                          )
-                        }
-                        {
-                          !waba.qtdConversao && !waba.qtdContatos && (
-                            <span>0</span>
-                          )
-                        }
+                        <span>{Math.round(((count) / (waba.logContatoComAgente?.length ?? 0)) * 100)}%</span>
                       </h3>
                     </div>
                     <div className="p-3 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-lg">
@@ -423,7 +401,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Taxa média de interação
+                    Taxa média de enganjamento que o agente obteve
                   </p>
                 </div>
               </div>
@@ -431,10 +409,8 @@ export default function DashboardPage() {
               {/* Contacts Section */}
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">Contatos Ativos</h3>
-                  <p className="text-muted-foreground mb-4">
-                    {isLoadingContacts ? "Carregando contatos..." : `${filteredContacts.length} de ${contacts.length} contatos encontrados`}
-                  </p>
+                  <h3 className="text-2xl font-bold text-foreground mb-4">Contatos Encontrados</h3>
+
 
                   {/* Search Filter */}
                   <div className="relative">
@@ -456,203 +432,157 @@ export default function DashboardPage() {
                   </div>
                 ) : filteredContacts.length > 0 ? (
                   <>
-                    {/* Pagination Controls */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-purple-500/5 border border-purple-500/20 rounded-lg p-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">Itens por página:</span>
-                        <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
-                          <SelectTrigger className="w-24 bg-input border-purple-500/20 text-foreground h-9">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-card border-purple-500/20">
-                            <SelectGroup>
-                              <SelectItem value="10" className="text-foreground">10</SelectItem>
-                              <SelectItem value="20" className="text-foreground">20</SelectItem>
-                              <SelectItem value="30" className="text-foreground">30</SelectItem>
-                              <SelectItem value="100" className="text-foreground">100</SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="text-sm text-muted-foreground">
-                        Página <span className="font-semibold text-foreground">{currentPage}</span> de <span className="font-semibold text-foreground">{totalPages}</span> • Mostrando <span className="font-semibold text-foreground">{paginatedContacts.length}</span> de <span className="font-semibold text-foreground">{filteredContacts.length}</span>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                          disabled={currentPage === 1}
-                          className="border-purple-500/20 disabled:opacity-50"
-                        >
-                          <ChevronLeft className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                          disabled={currentPage === totalPages}
-                          className="border-purple-500/20 disabled:opacity-50"
-                        >
-                          <ChevronRight className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
 
                     {/* Grid de Contatos */}
                     <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {paginatedContacts.map((contact) => (
-                      <div
-                        key={contact.id}
-                        className="bg-card border border-purple-500/20 rounded-2xl p-6 backdrop-blur hover:border-purple-500/50 transition-all hover:shadow-lg"
-                      >
-                        {/* Contact Header */}
-                        <div className="flex items-start gap-4 mb-4">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex items-center justify-center flex-shrink-0">
-                            <Users className="w-6 h-6 text-purple-500" />
+                        <div
+                          key={contact.id}
+                          className="bg-card border border-purple-500/20 rounded-2xl p-6 backdrop-blur hover:border-purple-500/50 transition-all hover:shadow-lg"
+                        >
+                          {/* Contact Header */}
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex items-center justify-center flex-shrink-0">
+                              <Users className="w-6 h-6 text-purple-500" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-foreground truncate">
+                                {contact.name || "Contato Anônimo"}
+                              </h4>
+                              <p className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
+                                <Phone className="w-4 h-4" />
+                                {contact.phone}
+                              </p>
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-foreground truncate">
-                              {contact.name || "Contato Anônimo"}
-                            </h4>
-                            <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-                              <Phone className="w-3 h-3" />
-                              {contact.phone}
-                            </p>
+
+                          <div className="mb-1 pb-4 border-t border-purple-500/10 gap-2">
+                            {/* Contact Info */}
+                            {contact.email && (
+
+                              <p className="text-xs text-muted-foreground flex items-center gap-2 mt-3">
+                                <Mail className="w-4 h-4" />
+                                {contact.email}
+                              </p>
+
+                            )}
+
+                            {contact.empresa && (
+                              <p className="text-xs text-muted-foreground flex items-center gap-2 mt-3">
+                                <Building2 className="w-4 h-4" />
+                                {contact.empresa}
+                              </p>
+                            )}
                           </div>
-                        </div>
 
-                        {/* Contact Info */}
-                        {contact.email && (
-                          <div className="mb-4 pb-4 border-t border-purple-500/10">
-                            <p className="text-xs text-muted-foreground flex items-center gap-2 mt-3">
-                              <Mail className="w-3 h-3" />
-                              {contact.email}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Actions */}
-                        <div className="flex gap-2">
-                          <Drawer direction="right" >
-                            <DrawerTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="flex-1 border-purple-500/20 text-purple-400 hover:bg-purple-500/10 hover:border-purple-500/50"
-                                onClick={() => coletarMensages(String(contact.id), String(waba.agent?.id))}
-                              >
-                                <MessageCircle className="w-4 h-4 mr-2" />
-                                Mensagens
-                              </Button>
-                            </DrawerTrigger>
-                            <DrawerContent className="bg-card border-purple-500/20">
-                              <DrawerHeader className="border-b border-purple-500/20">
-                                <DrawerTitle className="text-foreground">
-                                  {contact.name || "Contato"}
-                                </DrawerTitle>
-                                <DrawerDescription className="text-muted-foreground">
-                                  {contact.phone}
-                                </DrawerDescription>
-                              </DrawerHeader>
-                              <div className="overflow-y-auto p-6 space-y-4">
-                                {isLoadingMessages ? (
-                                  <div className="flex flex-col items-center justify-center h-32">
-                                    <Loader2 className="w-8 h-8 text-purple-500 animate-spin mb-2" />
-                                    <p className="text-sm text-muted-foreground">Carregando mensagens...</p>
-                                  </div>
-                                ) : messages.length > 0 ? (
-                                  messages.map((msg, idx) => (
-                                    <div key={idx} className="space-y-4">
-                                      {/* User Message */}
-                                      <div className="flex justify-end">
-                                        <div className="max-w-xs">
-                                          <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-2xl rounded-tr-none text-sm">
-                                            {msg.question_message}
-                                          </div>
-                                          <div className="flex justify-end mt-1 text-xs text-muted-foreground flex items-center gap-1">
-                                            <Clock className="w-3 h-3" />
-                                            {formatDateTime(String(msg.date_recept_message))}
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                      {/* Agent Message */}
-                                      <div className="flex justify-start">
-                                        <div className="max-w-xs">
-                                          <div className="bg-purple-500/20 text-foreground px-4 py-2 rounded-2xl rounded-tl-none text-sm border border-purple-500/20">
-                                            {msg.answer_message}
-                                          </div>
-                                          <div className="flex justify-start mt-1 text-xs text-muted-foreground flex items-center gap-1">
-                                            <Clock className="w-3 h-3" />
-                                            {formatDateTime(String(msg.date_send_message))}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))
-                                ) : (
-                                  <div className="flex items-center justify-center h-32 text-muted-foreground">
-                                    <div className="text-center">
-                                      <MessageCircle className="w-8 h-8 opacity-30 mx-auto mb-2" />
-                                      <p className="text-sm">Nenhuma mensagem encontrada</p>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                              <DrawerFooter className="border-t border-purple-500/20">
-                                <DrawerClose asChild>
-                                  <Button
-                                    variant="outline"
-                                    className="border-purple-500/20"
-                                  >
-                                    Fechar
-                                  </Button>
-                                </DrawerClose>
-                              </DrawerFooter>
-                            </DrawerContent>
-                          </Drawer>
-
-                          {contact.leadGoal && (
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
+                          {/* Actions */}
+                          <div className="flex gap-2">
+                            <Drawer direction="right" >
+                              <DrawerTrigger asChild>
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="border-purple-500/20 text-orange-400 hover:bg-orange-500/10 hover:border-orange-500/50"
+                                  className="flex-1 border-purple-500/20 text-white hover:bg-purple-500/10 hover:border-purple-500/50"
+                                  onClick={() => coletarMensages(String(contact.id), String(waba.agent?.id))}
                                 >
-                                  <Lightbulb className="w-4 h-4" />
+                                  <MessageCircle className="w-4 h-4 mr-2" />
+                                  Mensagens
                                 </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent className="border-purple-500/20 bg-card">
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle className="flex items-center gap-3 text-foreground">
-                                    <Lightbulb className="w-5 h-5 text-orange-500" />
-                                    Objetivo do Lead
-                                  </AlertDialogTitle>
-                                </AlertDialogHeader>
-                                <p className="text-muted-foreground">
-                                  {contact.leadGoal}
-                                </p>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel className="border-purple-500/20">
-                                    Fechar
-                                  </AlertDialogCancel>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          )}
+                              </DrawerTrigger>
+                              <DrawerContent className="bg-card border-purple-500/20">
+                                <DrawerHeader className="border-b border-purple-500/20">
+                                  <DrawerTitle className="text-foreground">
+                                    {contact.name || "Contato"}
+                                  </DrawerTitle>
+                                  <DrawerDescription className="text-muted-foreground">
+                                    {contact.phone}
+                                  </DrawerDescription>
+                                </DrawerHeader>
+                                <div className="overflow-y-auto p-6 space-y-4">
+                                  {isLoadingMessages ? (
+                                    <div className="flex flex-col items-center justify-center h-32">
+                                      <Loader2 className="w-8 h-8 text-purple-500 animate-spin mb-2" />
+                                      <p className="text-sm text-muted-foreground">Carregando mensagens...</p>
+                                    </div>
+                                  ) : messages.length > 0 ? (
+                                    messages.map((msg, idx) => (
+                                      <div key={idx} className="space-y-4">
+                                        {/* User Message */}
+                                        <div className="flex justify-end">
+                                          <div className="max-w-xs">
+                                            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-2xl rounded-tr-none text-sm">
+                                              {msg.question_message}
+                                            </div>
+                                            <div className="flex justify-end mt-1 text-xs text-muted-foreground flex items-center gap-1">
+                                              <Clock className="w-3 h-3" />
+                                              {formatDateTime(String(msg.date_recept_message))}
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        {/* Agent Message */}
+                                        <div className="flex justify-start">
+                                          <div className="max-w-xs">
+                                            <div className="bg-purple-500/20 text-foreground px-4 py-2 rounded-2xl rounded-tl-none text-sm border border-purple-500/20">
+                                              {msg.answer_message}
+                                            </div>
+                                            <div className="flex justify-start mt-1 text-xs text-muted-foreground flex items-center gap-1">
+                                              <Clock className="w-3 h-3" />
+                                              {formatDateTime(String(msg.date_send_message))}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <div className="flex items-center justify-center h-32 text-muted-foreground">
+                                      <div className="text-center">
+                                        <MessageCircle className="w-8 h-8 opacity-30 mx-auto mb-2" />
+                                        <p className="text-sm">Nenhuma mensagem encontrada</p>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                                <DrawerFooter className="border-t border-purple-500/20">
+                                  <DrawerClose asChild>
+                                    <Button
+                                      variant="outline"
+                                      className="border-purple-500/20"
+                                    >
+                                      Fechar
+                                    </Button>
+                                  </DrawerClose>
+                                </DrawerFooter>
+                              </DrawerContent>
+                            </Drawer>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                     </div>
 
                     {/* Pagination Controls - Footer */}
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 bg-purple-500/5 border border-purple-500/20 rounded-lg p-4">
-                      <div className="text-sm text-muted-foreground">
-                        Página <span className="font-semibold text-foreground">{currentPage}</span> de <span className="font-semibold text-foreground">{totalPages}</span> • Total de <span className="font-semibold text-foreground">{filteredContacts.length}</span> contatos
+                      <div className="text-sm text-muted-foreground gap-2 flex flex-col">
+                        <span>
+                          Página <span className="font-semibold text-foreground">{currentPage}</span> de <span className="font-semibold text-foreground">{totalPages}</span> • Total de <span className="font-semibold text-foreground">{filteredContacts.length}</span> contatos
+                        </span>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground">Itens por página:</span>
+                          <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+                            <SelectTrigger className="w-24 bg-input border-purple-500/20 text-foreground h-9">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent className="bg-card border-purple-500/20">
+                              <SelectGroup>
+                                <SelectItem value="10" className="text-foreground">10</SelectItem>
+                                <SelectItem value="20" className="text-foreground">20</SelectItem>
+                                <SelectItem value="30" className="text-foreground">30</SelectItem>
+                                <SelectItem value="100" className="text-foreground">100</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
 
                       <div className="flex gap-2">
