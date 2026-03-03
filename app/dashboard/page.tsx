@@ -3,7 +3,6 @@
 import { getWabas } from "@/app/services/waba";
 import type { Waba, Contact, Agent } from "@/lib/database.interface";
 
-
 import { toast } from "sonner";
 
 import type { Result, Message } from "@/app/services/message";
@@ -507,18 +506,7 @@ export default function DashboardPage() {
                                   ) : messages.length > 0 ? (
                                     messages.map((msg, idx) => (
                                       <div key={idx} className="space-y-4">
-                                        {/* User Message */}
-                                        <div className="flex justify-end">
-                                          <div className="max-w-xs">
-                                            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-2xl rounded-tr-none text-sm">
-                                              {msg.question_message}
-                                            </div>
-                                            <div className="flex justify-end mt-1 text-xs text-muted-foreground flex items-center gap-1">
-                                              <Clock className="w-3 h-3" />
-                                              {formatDateTime(String(msg.date_recept_message))}
-                                            </div>
-                                          </div>
-                                        </div>
+
 
                                         {/* Agent Message */}
                                         <div className="flex justify-start">
@@ -532,6 +520,21 @@ export default function DashboardPage() {
                                             </div>
                                           </div>
                                         </div>
+
+                                        {/* User Message */}
+                                        <div className="flex justify-end">
+                                          <div className="max-w-xs">
+                                            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-2xl rounded-tr-none text-sm">
+                                              {msg.question_message}
+                                            </div>
+                                            <div className="flex justify-end mt-1 text-xs text-muted-foreground flex items-center gap-1">
+                                              <Clock className="w-3 h-3" />
+                                              {formatDateTime(String(msg.date_recept_message))}
+                                            </div>
+                                          </div>
+                                        </div>
+
+
                                       </div>
                                     ))
                                   ) : (
