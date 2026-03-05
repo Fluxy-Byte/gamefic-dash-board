@@ -255,14 +255,14 @@ export default function DisparoAtivoModal({
             // const response = await fetch('/api/disparo', { method: 'POST', body: JSON.stringify(payload) })
             // if (!response.ok) throw new Error('Erro ao enviar')
 
-            //const result = await createCampaing(payload)
+            const result = await createCampaing(payload)
 
 
-            // if (result.status == true) {
-            //     toast.success("Sucesso ao carregar campanha para disparo")
-            // } else {
-            //     toast.error(result.message)
-            // }
+            if (result.status == true) {
+                toast.success("Sucesso ao carregar campanha para disparo")
+            } else {
+                toast.error(result.message)
+            }
             // Sucesso
             onOpenChange(false)
             resetForm()
