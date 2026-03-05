@@ -481,7 +481,7 @@ export default function DashboardPage() {
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="flex-1 bg-pink-500 hover:bg-pink-600 text-white border-0"
+                                  className="flex-1 bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0"
                                   onClick={() => coletarMensages(String(contact.id), String(waba.agent?.id))}
                                 >
                                   <MessageCircle className="w-4 h-4 mr-2" />
@@ -594,7 +594,7 @@ export default function DashboardPage() {
                           size="sm"
                           onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                           disabled={currentPage === 1}
-                          className="bg-pink-500 hover:bg-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
+                          className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                         >
                           <ChevronLeft className="w-4 h-4 mr-1" />
                           Anterior
@@ -604,7 +604,7 @@ export default function DashboardPage() {
                           size="sm"
                           onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                           disabled={currentPage === totalPages}
-                          className="bg-pink-500 hover:bg-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
+                          className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                         >
                           Próxima
                           <ChevronRight className="w-4 h-4 ml-1" />

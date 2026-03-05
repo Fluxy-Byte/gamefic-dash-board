@@ -145,7 +145,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                className="w-full bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white font-semibold py-6 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">

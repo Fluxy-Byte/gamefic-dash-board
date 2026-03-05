@@ -85,7 +85,7 @@ export function AppSidebar() {
                   <SidebarMenuButton 
                     asChild 
                     isActive={pathname === item.url}
-                    className={pathname === item.url ? "bg-pink-500 hover:bg-pink-600 text-white" : ""}
+                    className={pathname === item.url ? "bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white" : ""}
                   >
                     <Link href={item.url}>
                       <item.icon className="h-4 w-4" />

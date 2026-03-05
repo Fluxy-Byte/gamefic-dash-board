@@ -244,7 +244,7 @@ export default function CampaignPage() {
             <Button 
               disabled={!waba} 
               onClick={() => setOpen(true)}
-              className="bg-pink-500 hover:bg-pink-600 text-white w-full sm:w-auto"
+              className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white w-full sm:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nova campanha
@@ -533,7 +533,7 @@ export default function CampaignPage() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="bg-pink-500 hover:bg-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
+                      className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </Button>
@@ -544,7 +544,7 @@ export default function CampaignPage() {
                           variant={currentPage === page ? "default" : "outline"}
                           size="sm"
                           onClick={() => setCurrentPage(page)}
-                          className={currentPage === page ? "bg-pink-500 hover:bg-pink-600 text-white border-0" : "border-purple-500/20"}
+                          className={currentPage === page ? "bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0" : "border-purple-500/20"}
                         >
                           {page}
                         </Button>
@@ -555,7 +555,7 @@ export default function CampaignPage() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className="bg-pink-500 hover:bg-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
+                      className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </Button>
