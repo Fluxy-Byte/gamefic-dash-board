@@ -57,7 +57,8 @@ import type { Agent } from "@/lib/database.interface"
 const createWabaSchema = z.object({
     phoneNumberId: z.string().min(1, "O ID do numero cadastrado precisa ser preenchido!"),
     displayPhoneNumber: z.string().min(1, "O numero do telefone precisa ser preenchido!"),
-    idAgente: z.coerce.number().min(1, "É necessario selecionar um agente")
+    idAgente: z.coerce.number().min(1, "É necessario selecionar um agente"),
+    idWabaMeta: z.string().min(1, "E necessário um id do waba"),
 })
 
 const createAgentSchema = z.object({
@@ -76,6 +77,7 @@ export default function Details({ id }: { id: string }) {
     const [phoneNumberId, setPhoneNumberId] = useState("");
     const [displayPhoneNumber, setDisplayPhoneNumber] = useState("");
     const [idAgente, setIdAgente] = useState<number>();
+    const [idWabaMeta, setIdWabaMeta] = useState("")
 
 
     const [loading, setLoading] = useState(false);
@@ -85,7 +87,8 @@ export default function Details({ id }: { id: string }) {
         const validation = createWabaSchema.safeParse({
             phoneNumberId,
             displayPhoneNumber,
-            idAgente
+            idAgente,
+            idWabaMeta
         })
 
         if (!validation.success) {
@@ -101,10 +104,11 @@ export default function Details({ id }: { id: string }) {
                 phoneNumberId: validation.data.phoneNumberId,
                 displayPhoneNumber: validation.data.displayPhoneNumber,
                 idAgente: validation.data.idAgente,
-                idOrganization: id
+                idOrganization: id,
+                id_waba_meta: validation.data.idWabaMeta
             }
 
-            const result = await createWaba(body.phoneNumberId, body.displayPhoneNumber, body.idOrganization, body.idAgente);
+            const result = await createWaba(body.phoneNumberId, body.displayPhoneNumber, body.idOrganization, body.idAgente, body.id_waba_meta);
 
             if (result.waba) {
                 toast.info("Waba criado com sucesso!")
@@ -254,6 +258,12 @@ export default function Details({ id }: { id: string }) {
                                             </Item>
                                         )
                                     }
+
+                                    <Input
+                                        placeholder="Numero do ID do WABA"
+                                        value={idWabaMeta}
+                                        onChange={(e) => setIdWabaMeta(e.target.value)}
+                                    />
 
                                     <Input
                                         placeholder="ID do numero cadastrado na Meta"

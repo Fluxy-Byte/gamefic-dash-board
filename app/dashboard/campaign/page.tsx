@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Plus } from "lucide-react";
+import DisparoAtivoModal from "@/app/dashboard/campaign/components/modal"
 
 import {
   AlertDialog,
@@ -68,6 +69,7 @@ export default function CampaignPage() {
   const [count, setCount] = useState<number>(0);
   const [campanhas, setCampanhas] = useState<CampanhaComContatos[]>([]);
   const [campanhasCarregando, setCampanhasCarregando] = useState<Record<number, boolean>>({});
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (idOrganization) {
@@ -183,10 +185,6 @@ export default function CampaignPage() {
             Gerencie suas campanhas de marketing
           </p>
         </div>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Nova Campanha
-        </Button>
       </div>
 
       <Card>
@@ -268,13 +266,30 @@ export default function CampaignPage() {
       {/* Campanhas Section */}
       <Card>
         <CardHeader>
-          <CardTitle>Campanhas Disponíveis</CardTitle>
-          <CardDescription>
-            {campanhas.length === 0
-              ? "Nenhuma campanha encontrada"
-              : `${campanhas.length} campanha${campanhas.length > 1 ? 's' : ''} disponível${campanhas.length > 1 ? 's' : ''}`
-            }
-          </CardDescription>
+          <div className="w-full flex justify-between">
+            <div>
+              <CardTitle>Campanhas Disponíveis</CardTitle>
+              <CardDescription>
+                {campanhas.length === 0
+                  ? "Nenhuma campanha encontrada"
+                  : `${campanhas.length} campanha${campanhas.length > 1 ? 's' : ''} disponível${campanhas.length > 1 ? 's' : ''}`
+                }
+              </CardDescription>
+            </div>
+            <div>
+              <Button disabled={!waba} onClick={() => setOpen(true)}>Nova campanha</Button>
+              {waba && waba.phoneNumberId && idOrganization && (
+                <DisparoAtivoModal
+                  open={open}
+                  onOpenChange={setOpen}
+                  phoneNumberId={waba.phoneNumberId}
+                  idOrganizacao={idOrganization}
+                />
+              )}
+            </div>
+          </div>
+
+
         </CardHeader>
         <CardContent>
           {!isLoadingWabas && campanhas?.length === 0 && (

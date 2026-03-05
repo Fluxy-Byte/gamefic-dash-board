@@ -32,7 +32,7 @@ export async function getWabas(id: string): Promise<Result> {
     }
 }
 
-export async function createWaba(phone_number_id: string, display_phone_number: string, idOrganization: string, idAgente: number): Promise<ResultSimple> {
+export async function createWaba(phone_number_id: string, display_phone_number: string, idOrganization: string, idAgente: number, id_waba_meta: string): Promise<ResultSimple> {
     try {
         const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
@@ -42,7 +42,8 @@ export async function createWaba(phone_number_id: string, display_phone_number: 
                 "phone_number_id": phone_number_id,
                 "display_phone_number": display_phone_number,
                 "idOrganization": idOrganization,
-                "idAgente": idAgente
+                "idAgente": idAgente,
+                "id_waba_meta": id_waba_meta
             }
         )
 
@@ -57,7 +58,7 @@ export async function createWaba(phone_number_id: string, display_phone_number: 
     }
 }
 
-export async function updateWaba(phone_number_id: string, display_phone_number: string, idOrganization: string, idAgente: number): Promise<ResultSimple> {
+export async function updateWaba(phone_number_id: string, display_phone_number: string, idOrganization: string, idAgente: number, id_waba_meta: string): Promise<ResultSimple> {
     try {
         const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
 
@@ -66,7 +67,8 @@ export async function updateWaba(phone_number_id: string, display_phone_number: 
             {
                 "displayPhoneNumber": display_phone_number,
                 "organizationId": idOrganization,
-                "agentId": idAgente
+                "agentId": idAgente,
+                "id_waba_meta": id_waba_meta
             }
         )
 

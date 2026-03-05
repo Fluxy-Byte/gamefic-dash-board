@@ -43,7 +43,8 @@ interface Props {
 const createWabaSchema = z.object({
     phoneNumberId: z.string().min(1, "O ID do numero cadastrado precisa ser preenchido!"),
     displayPhoneNumber: z.string().min(1, "O numero do telefone precisa ser preenchido!"),
-    idAgente: z.coerce.number().min(1, "É necessario selecionar um agente")
+    idAgente: z.coerce.number().min(1, "É necessario selecionar um agente"),
+    idWabaMeta: z.string().min(1, "É necessário o ID do WABA")
 })
 
 export default function Wabas(prosp: Props) {
@@ -51,12 +52,14 @@ export default function Wabas(prosp: Props) {
     const [displayPhoneNumber, setDisplayPhoneNumber] = useState("");
     const [idAgente, setIdAgente] = useState<number>();
     const [loading, setLoading] = useState(false)
+    const [idWabaMeta, setIdWabaMeta] = useState("")
 
     async function handleValidateAndSubmit() {
         const validation = createWabaSchema.safeParse({
             phoneNumberId,
             displayPhoneNumber,
-            idAgente
+            idAgente,
+            idWabaMeta
         })
 
         if (!validation.success) {
@@ -68,18 +71,12 @@ export default function Wabas(prosp: Props) {
         try {
             setLoading(true);
 
-            console.log(
-                validation.data.phoneNumberId,
-                validation.data.displayPhoneNumber,
-                prosp.organizationId,
-                validation.data.idAgente
-            )
-
             const result = await updateWaba(
                 validation.data.phoneNumberId,
                 validation.data.displayPhoneNumber,
                 prosp.organizationId,
-                validation.data.idAgente
+                validation.data.idAgente,
+                validation.data.idWabaMeta
             );
 
 
@@ -130,6 +127,12 @@ export default function Wabas(prosp: Props) {
                                     Preencha os dados abaixo para atualizar seu waba.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
+
+                            <Input
+                                placeholder="Numero do ID do WABA"
+                                value={idWabaMeta}
+                                onChange={(e) => setIdWabaMeta(e.target.value)}
+                            />
 
                             <Input
                                 placeholder="ID do numero cadastrado na Meta"

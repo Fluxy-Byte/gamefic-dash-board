@@ -14,6 +14,12 @@ interface ResultSimple {
     message: string
 }
 
+interface ResultSimpleCampaing {
+    status: boolean,
+    error: String | null
+    message: string
+}
+
 export async function getCampaings(idWaba: string, idOrganization: string): Promise<Result> {
     try {
         const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
@@ -33,6 +39,29 @@ export async function getCampaings(idWaba: string, idOrganization: string): Prom
         }
     }
 }
+
+
+
+export async function createCampaing(payload: any): Promise<ResultSimpleCampaing> {
+    try {
+        const url = process.env.NEXT_API_URL_BACKEND ?? "https://gamefic-orquestrador.egnehl.easypanel.host";
+
+        const { data } = await axios.post(
+            `${url}/api/v1/campaign`,
+            payload
+        )
+
+        return data;
+    } catch (e: any) {
+        console.error(e);
+        return {
+            status: false,
+            error: e,
+            message: "Erro inesperado na criação do wabas"
+        }
+    }
+}
+
 
 export async function createWaba(phone_number_id: string, display_phone_number: string, idOrganization: string, idAgente: number): Promise<ResultSimple> {
     try {
