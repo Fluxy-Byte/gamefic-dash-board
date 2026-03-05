@@ -73,6 +73,7 @@ export default function CampaignPage() {
   const [campanhasCarregando, setCampanhasCarregando] = useState<Record<number, boolean>>({});
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [dateFilter, setDateFilter] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
@@ -117,6 +118,7 @@ export default function CampaignPage() {
       setFilteredCampanhas(result.campanhas);
       setCurrentPage(1);
       setSearchTerm("");
+      setDateFilter("");
     } catch (e) {
       console.error(e)
       toast.error("Tivemos um erro na busca as campanhas!")
@@ -130,15 +132,37 @@ export default function CampaignPage() {
   const handleSearchCampanhas = (term: string) => {
     setSearchTerm(term);
     setCurrentPage(1);
-    if (!term.trim()) {
-      setFilteredCampanhas(campanhas);
-    } else {
-      const filtered = campanhas.filter((c) =>
+    applyFilters(term, dateFilter);
+  }
+
+  const handleDateFilter = (date: string) => {
+    setDateFilter(date);
+    setCurrentPage(1);
+    applyFilters(searchTerm, date);
+  }
+
+  const applyFilters = (term: string, date: string) => {
+    let filtered = campanhas;
+
+    // Filtro por nome ou template
+    if (term.trim()) {
+      filtered = filtered.filter((c) =>
         c.name?.toLowerCase().includes(term.toLowerCase()) ||
         c.nameTemplate?.toLowerCase().includes(term.toLowerCase())
       );
-      setFilteredCampanhas(filtered);
     }
+
+    // Filtro por data
+    if (date) {
+      const selectedDate = new Date(date).toDateString();
+      filtered = filtered.filter((c) => {
+        if (!c.dataDeEnvio) return false;
+        const campanhaDate = new Date(c.dataDeEnvio.toString().replace(" ", "T")).toDateString();
+        return campanhaDate === selectedDate;
+      });
+    }
+
+    setFilteredCampanhas(filtered);
   }
 
   // Paginação
@@ -220,7 +244,7 @@ export default function CampaignPage() {
             <Button 
               disabled={!waba} 
               onClick={() => setOpen(true)}
-              className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto"
+              className="bg-pink-500 hover:bg-pink-600 text-white w-full sm:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nova campanha
@@ -247,7 +271,7 @@ export default function CampaignPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Organization Select */}
               <div className="space-y-2 sm:space-y-3">
                 <label className="text-xs sm:text-sm font-semibold text-foreground block">
@@ -302,6 +326,19 @@ export default function CampaignPage() {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Date Filter */}
+              <div className="space-y-2 sm:space-y-3">
+                <label className="text-xs sm:text-sm font-semibold text-foreground block">
+                  Data de Envio
+                </label>
+                <Input
+                  type="date"
+                  value={dateFilter}
+                  onChange={(e) => handleDateFilter(e.target.value)}
+                  className="bg-input border-purple-500/20 text-foreground h-10 sm:h-11"
+                />
               </div>
             </div>
 
@@ -496,7 +533,7 @@ export default function CampaignPage() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="border-purple-500/20"
+                      className="bg-pink-500 hover:bg-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </Button>
@@ -507,7 +544,7 @@ export default function CampaignPage() {
                           variant={currentPage === page ? "default" : "outline"}
                           size="sm"
                           onClick={() => setCurrentPage(page)}
-                          className={currentPage === page ? "bg-purple-600 hover:bg-purple-700" : "border-purple-500/20"}
+                          className={currentPage === page ? "bg-pink-500 hover:bg-pink-600 text-white border-0" : "border-purple-500/20"}
                         >
                           {page}
                         </Button>
@@ -518,7 +555,7 @@ export default function CampaignPage() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className="border-purple-500/20"
+                      className="bg-pink-500 hover:bg-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </Button>
