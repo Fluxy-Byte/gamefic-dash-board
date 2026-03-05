@@ -206,7 +206,7 @@ export default function DashboardPage() {
       <header className="sticky top-0 z-50 border-b border-purple-500/20 bg-background/95 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center">
               <MessageCircle className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -254,7 +254,7 @@ export default function DashboardPage() {
       <main className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8">
           {/* Welcome Section */}
-          <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/20 rounded-2xl p-8 backdrop-blur">
+          <div className="bg-purple-600/10 border border-purple-500/20 rounded-2xl p-8 backdrop-blur">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-3xl font-bold text-foreground mb-2">
@@ -359,7 +359,7 @@ export default function DashboardPage() {
                         <span>{waba.logContatoComAgente?.length ?? 0}</span>
                       </h3>
                     </div>
-                    <div className="p-3 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-lg">
+                    <div className="p-3 bg-purple-600/10 rounded-lg">
                       <Users className="w-6 h-6 text-purple-500" />
                     </div>
                   </div>
@@ -377,7 +377,7 @@ export default function DashboardPage() {
                         <span>{count}</span>
                       </h3>
                     </div>
-                    <div className="p-3 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-lg">
+                    <div className="p-3 bg-purple-600/10 rounded-lg">
                       <TrendingUp className="w-6 h-6 text-pink-500" />
                     </div>
                   </div>
@@ -395,7 +395,7 @@ export default function DashboardPage() {
                         <span>{Math.round(((count) / (waba.logContatoComAgente?.length ?? 0)) * 100)}%</span>
                       </h3>
                     </div>
-                    <div className="p-3 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-lg">
+                    <div className="p-3 bg-purple-600/10 rounded-lg">
                       <BarChart3 className="w-6 h-6 text-orange-500" />
                     </div>
                   </div>
@@ -441,7 +441,7 @@ export default function DashboardPage() {
                         >
                           {/* Contact Header */}
                           <div className="flex items-start gap-4 mb-4">
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex items-center justify-center flex-shrink-0">
+                            <div className="w-12 h-12 rounded-full bg-purple-600/20 flex items-center justify-center flex-shrink-0">
                               <Users className="w-6 h-6 text-purple-500" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -524,7 +524,7 @@ export default function DashboardPage() {
                                         {/* User Message */}
                                         <div className="flex justify-end">
                                           <div className="max-w-xs">
-                                            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-2xl rounded-tr-none text-sm">
+                                            <div className="bg-purple-600 text-white px-4 py-2 rounded-2xl rounded-tr-none text-sm">
                                               {msg.question_message}
                                             </div>
                                             <div className="flex justify-end mt-1 text-xs text-muted-foreground flex items-center gap-1">
