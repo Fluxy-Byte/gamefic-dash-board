@@ -152,7 +152,7 @@ export default function DisparoAtivoModal({
                 let withEmail = 0
 
                 for (const line of dataLines) {
-                    const [name, empresa, phone, email] = line.split(',').map((s) => s.trim())
+                    const [name, phone, empresa, email] = line.split(',').map((s) => s.trim())
 
                     // Validação: telefone é obrigatório
                     if (!phone) {
@@ -162,7 +162,7 @@ export default function DisparoAtivoModal({
                         toast.error(`Contato com dados incompletos encontrado. Telefone é obrigatório.`)
                         return
                     }
-
+                    console.log(parsedContacts)
                     parsedContacts.push({
                         phone,
                         name: name || '',
@@ -255,14 +255,14 @@ export default function DisparoAtivoModal({
             // const response = await fetch('/api/disparo', { method: 'POST', body: JSON.stringify(payload) })
             // if (!response.ok) throw new Error('Erro ao enviar')
 
-            const result = await createCampaing(payload)
+            //const result = await createCampaing(payload)
 
 
-            if (result.status == true) {
-                toast.success("Sucesso ao carregar campanha para disparo")
-            } else {
-                toast.error(result.message)
-            }
+            // if (result.status == true) {
+            //     toast.success("Sucesso ao carregar campanha para disparo")
+            // } else {
+            //     toast.error(result.message)
+            // }
             // Sucesso
             onOpenChange(false)
             resetForm()
