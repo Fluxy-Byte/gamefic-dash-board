@@ -194,7 +194,7 @@ export default function SignUpPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-6 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">
