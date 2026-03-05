@@ -66,7 +66,7 @@ export default function SignUpPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl relative z-10">
         {/* Left side - Brand */}
-        <div className="hidden md:flex flex-col justify-between bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 rounded-2xl p-12 relative overflow-hidden">
+        <div className="hidden md:flex flex-col justify-between bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-12 relative overflow-hidden">
           {/* Decorative elements */}
           <div className="absolute top-6 right-6 w-32 h-32 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-full blur-2xl opacity-30 rotate-45"></div>
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-gradient-to-t from-yellow-400 to-transparent rounded-full blur-3xl opacity-20"></div>
@@ -194,7 +194,7 @@ export default function SignUpPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-6 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
                 {isLoading ? (
                   <div className="flex items-center gap-2">

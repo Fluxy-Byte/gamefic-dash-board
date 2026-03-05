@@ -9,9 +9,10 @@ import { useState, useEffect } from "react";
 import { useSession } from "@/lib/auth-client";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import DisparoAtivoModal from "@/app/dashboard/campaign/components/modal"
 
 import {
@@ -68,8 +69,12 @@ export default function CampaignPage() {
   const [isLoadingWabas, setIsLoadingWabas] = useState(false);
   const [count, setCount] = useState<number>(0);
   const [campanhas, setCampanhas] = useState<CampanhaComContatos[]>([]);
+  const [filteredCampanhas, setFilteredCampanhas] = useState<CampanhaComContatos[]>([]);
   const [campanhasCarregando, setCampanhasCarregando] = useState<Record<number, boolean>>({});
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   useEffect(() => {
     if (idOrganization) {
@@ -109,14 +114,38 @@ export default function CampaignPage() {
       const result = await getCampaings(String(idWaba), idOrganization);
 
       setCampanhas(result.campanhas);
+      setFilteredCampanhas(result.campanhas);
+      setCurrentPage(1);
+      setSearchTerm("");
     } catch (e) {
       console.error(e)
       toast.error("Tivemos um erro na busca as campanhas!")
       setCampanhas([]);
+      setFilteredCampanhas([]);
     } finally {
       setIsLoadingWabas(false);
     }
   }
+
+  const handleSearchCampanhas = (term: string) => {
+    setSearchTerm(term);
+    setCurrentPage(1);
+    if (!term.trim()) {
+      setFilteredCampanhas(campanhas);
+    } else {
+      const filtered = campanhas.filter((c) =>
+        c.name?.toLowerCase().includes(term.toLowerCase()) ||
+        c.nameTemplate?.toLowerCase().includes(term.toLowerCase())
+      );
+      setFilteredCampanhas(filtered);
+    }
+  }
+
+  // Paginação
+  const totalPages = Math.ceil(filteredCampanhas.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedCampanhas = filteredCampanhas.slice(startIndex, endIndex);
 
   async function carregarContatosCampanha(idCampanha: number) {
     // Se já foi carregado, não carregar novamente
@@ -191,7 +220,7 @@ export default function CampaignPage() {
             <Button 
               disabled={!waba} 
               onClick={() => setOpen(true)}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white w-full sm:w-auto"
+              className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nova campanha
@@ -292,13 +321,29 @@ export default function CampaignPage() {
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-foreground">Campanhas Disponíveis</h2>
               <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                {campanhas.length === 0
+                {filteredCampanhas.length === 0
                   ? "Nenhuma campanha encontrada"
-                  : `${campanhas.length} campanha${campanhas.length > 1 ? 's' : ''} disponível${campanhas.length > 1 ? 's' : ''}`
+                  : `${filteredCampanhas.length} campanha${filteredCampanhas.length > 1 ? 's' : ''} encontrada${filteredCampanhas.length > 1 ? 's' : ''}`
                 }
               </p>
             </div>
           </div>
+
+          {/* Search Box */}
+          {!isLoadingWabas && campanhas?.length > 0 && (
+            <div className="mb-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Buscar por nome da campanha ou template..."
+                  value={searchTerm}
+                  onChange={(e) => handleSearchCampanhas(e.target.value)}
+                  className="bg-input border-purple-500/20 text-foreground placeholder:text-muted-foreground focus:border-purple-500 focus:ring-purple-500/20 pl-10"
+                />
+              </div>
+            </div>
+          )}
 
           {!isLoadingWabas && campanhas?.length === 0 && (
             <Card className="border-purple-500/20">
@@ -311,9 +356,9 @@ export default function CampaignPage() {
             </Card>
           )}
 
-          {!isLoadingWabas && campanhas?.length > 0 && (
+          {!isLoadingWabas && paginatedCampanhas?.length > 0 && (
             <div className="space-y-4">
-              {campanhas.map((campanha) => (
+              {paginatedCampanhas.map((campanha) => (
                 <Card key={campanha.id} className="border-purple-500/20 bg-card/50 backdrop-blur hover:border-purple-500/40 transition-colors overflow-hidden">
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value={`campanha-${campanha.id}`} className="border-0">
@@ -438,6 +483,48 @@ export default function CampaignPage() {
                   </Accordion>
                 </Card>
               ))}
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-4 border-t border-purple-500/20">
+                  <p className="text-sm text-muted-foreground">
+                    Página {currentPage} de {totalPages}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      className="border-purple-500/20"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </Button>
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <Button
+                          key={page}
+                          variant={currentPage === page ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(page)}
+                          className={currentPage === page ? "bg-purple-600 hover:bg-purple-700" : "border-purple-500/20"}
+                        >
+                          {page}
+                        </Button>
+                      ))}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                      className="border-purple-500/20"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
