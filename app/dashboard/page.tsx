@@ -203,30 +203,25 @@ export default function DashboardPage() {
   return (
     <div className="w-full min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-purple-500/20 bg-background/95 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center">
-              <MessageCircle className="w-6 h-6 text-white" />
+      <header className="sticky top-0 z-40 border-b border-purple-500/20 bg-background/80 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+              <MessageCircle className="w-5 h-5 text-white" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-foreground">Fluxy</h1>
-              <p className="text-xs text-muted-foreground">Gerenciador de Agentes IA</p>
+            <div className="hidden sm:block">
+              <h1 className="text-lg font-bold text-foreground">Fluxy</h1>
+              <p className="text-xs text-muted-foreground">Agentes IA</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 text-sm">
-              <span className="text-muted-foreground">Bem-vindo,</span>
-              <span className="font-semibold text-foreground">{session?.user?.name}</span>
-            </div>
-
+          <div className="flex items-center gap-3 sm:gap-4">
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground hover:bg-purple-500/10 rounded-lg"
                 >
                   <LogOut className="w-5 h-5" />
                 </Button>
@@ -253,39 +248,31 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8">
-          {/* Welcome Section */}
-          <div className="bg-purple-600/10 border border-purple-500/20 rounded-2xl p-8 backdrop-blur">
-            <div className="flex items-start justify-between">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground mb-2">
-                  Dashboard de Agentes
-                </h2>
-                <p className="text-muted-foreground max-w-2xl">
-                  Gerencie todos os seus agentes de WhatsApp com IA em um único lugar.
-                  Visualize métricas, contatos e conversas em tempo real.
-                </p>
-              </div>
-              <Zap className="w-12 h-12 text-purple-600/60" />
+          {/* Greeting Section - Modern Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-4xl font-bold text-foreground">
+                Olá, {session?.user?.name?.split(' ')[0]}! 👋
+              </h1>
+              <p className="text-muted-foreground mt-2">Bem-vindo ao seu dashboard de agentes IA</p>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </div>
           </div>
 
           {/* Filters Section - Reorganized */}
-          <div className="bg-card border border-purple-500/20 rounded-2xl p-8 backdrop-blur">
-            <h3 className="text-lg font-semibold text-foreground mb-8 flex items-center gap-2">
-              <Settings className="w-5 h-5 text-purple-500" />
-              Configurações de Acesso
-            </h3>
-
-            <div className="space-y-6">
+          <div className="bg-card/50 border border-purple-500/20 rounded-2xl p-6 backdrop-blur">
+            <div className="space-y-4">
               {/* Main Selects Row */}
-              <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Organization Select */}
-                <div className="space-y-3">
-                  <label className="text-sm font-semibold text-foreground block">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-foreground block uppercase tracking-wide">
                     Organização
                   </label>
                   <Select onValueChange={setIdOrganization}>
-                    <SelectTrigger className="bg-input border-purple-500/20 text-foreground h-11">
+                    <SelectTrigger className="bg-input border-purple-500/20 text-foreground h-10 rounded-lg focus:border-purple-500">
                       <SelectValue placeholder="Selecione uma organização" />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-purple-500/20">
@@ -302,8 +289,8 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Agent Select */}
-                <div className="space-y-3">
-                  <label className="text-sm font-semibold text-foreground block">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-foreground block uppercase tracking-wide">
                     Agente
                   </label>
                   <Select
@@ -313,7 +300,7 @@ export default function DashboardPage() {
                     }}
                     disabled={isLoadingWabas || wabas.length === 0}
                   >
-                    <SelectTrigger className="bg-input border-purple-500/20 text-foreground h-11 disabled:opacity-50">
+                    <SelectTrigger className="bg-input border-purple-500/20 text-foreground h-10 rounded-lg disabled:opacity-50 focus:border-purple-500">
                       <SelectValue placeholder={isLoadingWabas ? "Carregando agentes..." : "Selecione um agente"} />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-purple-500/20">
@@ -349,54 +336,51 @@ export default function DashboardPage() {
           {/* Metrics Section */}
           {waba && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Total Contacts Card */}
-                <div className="bg-card border border-purple-500/20 rounded-2xl p-6 backdrop-blur hover:border-purple-500/50 transition-colors">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Total de Contatos</p>
-                      <h3 className="text-4xl font-bold text-foreground">
-                        <span>{waba.logContatoComAgente?.length ?? 0}</span>
+                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-xl p-6 backdrop-blur hover:border-purple-500/40 transition-all hover:shadow-lg">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Contatos Totais</p>
+                      <h3 className="text-3xl font-bold text-foreground">
+                        {waba.logContatoComAgente?.length ?? 0}
                       </h3>
+                      <p className="text-xs text-muted-foreground mt-3">Conversas iniciadas</p>
                     </div>
-                    <div className="p-3 bg-purple-600/10 rounded-lg">
-                      <Users className="w-6 h-6 text-purple-500" />
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+                      <Users className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Número de contatos que o agente teve conversa
-                  </p>
                 </div>
 
                 {/* Conversion Rate Card */}
-                <div className="bg-card border border-purple-500/20 rounded-2xl p-6 backdrop-blur hover:border-purple-500/50 transition-colors">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Número de Conversão</p>
-                      <h3 className="text-4xl font-bold text-foreground">
-                        <span>{count}</span>
+                <div className="bg-gradient-to-br from-pink-500/10 to-purple-500/10 border border-purple-500/20 rounded-xl p-6 backdrop-blur hover:border-purple-500/40 transition-all hover:shadow-lg">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Conversões</p>
+                      <h3 className="text-3xl font-bold text-foreground">
+                        {count}
                       </h3>
+                      <p className="text-xs text-muted-foreground mt-3">Conversões conseguidas</p>
                     </div>
-                    <div className="p-3 bg-purple-600/10 rounded-lg">
-                      <TrendingUp className="w-6 h-6 text-pink-500" />
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+                      <TrendingUp className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Número de conversão que o agente conseguiu
-                  </p>
                 </div>
 
                 {/* Engagement Card */}
-                <div className="bg-card border border-purple-500/20 rounded-2xl p-6 backdrop-blur hover:border-purple-500/50 transition-colors">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-1">Procentagem de Engajamento</p>
-                      <h3 className="text-4xl font-bold text-foreground">
-                        <span>{Math.round(((count) / (waba.logContatoComAgente?.length ?? 0)) * 100)}%</span>
+                <div className="bg-gradient-to-br from-orange-500/10 to-purple-500/10 border border-purple-500/20 rounded-xl p-6 backdrop-blur hover:border-purple-500/40 transition-all hover:shadow-lg">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Engajamento</p>
+                      <h3 className="text-3xl font-bold text-foreground">
+                        {Math.round(((count) / (waba.logContatoComAgente?.length ?? 0)) * 100)}%
                       </h3>
+                      <p className="text-xs text-muted-foreground mt-3">Taxa de conversão</p>
                     </div>
-                    <div className="p-3 bg-purple-600/10 rounded-lg">
-                      <BarChart3 className="w-6 h-6 text-orange-500" />
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+                      <BarChart3 className="w-6 h-6 text-white" />
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -407,19 +391,21 @@ export default function DashboardPage() {
 
               {/* Contacts Section */}
               <div className="space-y-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">Contatos Encontrados</h3>
-
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground">Contatos Encontrados</h2>
+                    <p className="text-sm text-muted-foreground mt-1">{filteredContacts.length} contatos no total</p>
+                  </div>
 
                   {/* Search Filter */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <div className="relative flex-1 sm:flex-initial sm:min-w-64">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                       type="text"
                       placeholder="Buscar por nome ou telefone..."
                       value={searchTerm}
                       onChange={(e) => handleSearchContacts(e.target.value)}
-                      className="pl-10 bg-input border-purple-500/20 text-foreground placeholder:text-muted-foreground focus:border-purple-500 focus:ring-purple-500/20"
+                      className="pl-10 bg-input border-purple-500/20 text-foreground placeholder:text-muted-foreground focus:border-purple-500 focus:ring-purple-500/20 rounded-lg"
                     />
                   </div>
                 </div>
@@ -433,43 +419,41 @@ export default function DashboardPage() {
                   <>
 
                     {/* Grid de Contatos */}
-                    <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {paginatedContacts.map((contact) => (
                         <div
                           key={contact.id}
-                          className="bg-card border border-purple-500/20 rounded-2xl p-6 backdrop-blur hover:border-purple-500/50 transition-all hover:shadow-lg"
+                          className="group bg-card/50 border border-purple-500/20 rounded-xl p-5 backdrop-blur hover:border-purple-500/40 hover:bg-card transition-all hover:shadow-lg"
                         >
                           {/* Contact Header */}
-                          <div className="flex items-start gap-4 mb-4">
-                            <div className="w-12 h-12 rounded-full bg-purple-600/20 flex items-center justify-center flex-shrink-0">
-                              <Users className="w-6 h-6 text-purple-500" />
+                          <div className="flex items-start gap-3 mb-4">
+                            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+                              <Users className="w-5 h-5 text-white" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-foreground truncate">
+                              <h4 className="font-semibold text-foreground truncate text-sm">
                                 {contact.name || "Contato Anônimo"}
                               </h4>
-                              <p className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
-                                <Phone className="w-4 h-4" />
+                              <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1 truncate">
+                                <Phone className="w-3 h-3 flex-shrink-0" />
                                 {contact.phone}
                               </p>
                             </div>
                           </div>
 
-                          <div className="mb-1 pb-4 border-t border-purple-500/10 gap-2">
+                          <div className="space-y-2 pb-4 border-b border-purple-500/10">
                             {/* Contact Info */}
                             {contact.email && (
-
-                              <p className="text-xs text-muted-foreground flex items-center gap-2 mt-3">
-                                <Mail className="w-4 h-4" />
-                                {contact.email}
+                              <p className="text-xs text-muted-foreground flex items-center gap-2 truncate hover:text-foreground transition-colors">
+                                <Mail className="w-3 h-3 flex-shrink-0" />
+                                <span className="truncate">{contact.email}</span>
                               </p>
-
                             )}
 
                             {contact.empresa && (
-                              <p className="text-xs text-muted-foreground flex items-center gap-2 mt-3">
-                                <Building2 className="w-4 h-4" />
-                                {contact.empresa}
+                              <p className="text-xs text-muted-foreground flex items-center gap-2 truncate hover:text-foreground transition-colors">
+                                <Building2 className="w-3 h-3 flex-shrink-0" />
+                                <span className="truncate">{contact.empresa}</span>
                               </p>
                             )}
                           </div>
