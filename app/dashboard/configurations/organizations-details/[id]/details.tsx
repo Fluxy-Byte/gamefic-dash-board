@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { z } from "zod"
+import { useSession } from "@/lib/auth-client"
 
 import {
     Card,
@@ -40,7 +41,7 @@ import {
     ItemMedia,
     ItemTitle,
 } from "@/components/ui/item"
-import { TriangleAlert } from "lucide-react"
+import { TriangleAlert, Mail, Trash2 } from "lucide-react"
 
 import WabaComponent from "@/app/dashboard/configurations/components/wabas"
 import AgentsComponent from "@/app/dashboard/configurations/components/agentes"
@@ -66,13 +67,22 @@ const createAgentSchema = z.object({
     urlAgent: z.string().min(5, "A URL do agente é obrigatório"),
 })
 
+const addEmailSchema = z.object({
+    email: z.string().email("Email inválido"),
+})
+
 export default function Details({ id }: { id: string }) {
+    const { data: session } = useSession()
+    const isAdmin = session?.user?.role === "admin"
+    
     const [organization, setOrganization] = useState<Organization | null>(null)
     const [wabas, setWabas] = useState<Waba[]>([])
     const [agents, setAgents] = useState<Agent[]>([])
+    const [emails, setEmails] = useState<string[]>([])
 
     const [name, setName] = useState("");
     const [urlAgent, setUrlAgent] = useState("");
+    const [newEmail, setNewEmail] = useState("");
 
     const [phoneNumberId, setPhoneNumberId] = useState("");
     const [displayPhoneNumber, setDisplayPhoneNumber] = useState("");
@@ -161,6 +171,33 @@ export default function Details({ id }: { id: string }) {
         } finally {
             setLoading(false);
         }
+    }
+
+    function handleAddEmail() {
+        const validation = addEmailSchema.safeParse({
+            email: newEmail,
+        })
+
+        if (!validation.success) {
+            const errorMessage = validation.error.errors[0]?.message
+            toast.error(errorMessage || "Erro de validação")
+            return
+        }
+
+        // Verificar se o email já existe
+        if (emails.includes(newEmail)) {
+            toast.error("Este email já foi adicionado")
+            return
+        }
+
+        setEmails([...emails, newEmail])
+        setNewEmail("")
+        toast.success("Email adicionado com sucesso!")
+    }
+
+    function handleRemoveEmail(emailToRemove: string) {
+        setEmails(emails.filter(email => email !== emailToRemove))
+        toast.success("Email removido com sucesso!")
     }
 
     useEffect(() => {
@@ -378,6 +415,90 @@ export default function Details({ id }: { id: string }) {
                     <AgentsComponent agents={agents} organizationId={id} />
                 </CardContent>
             </Card>
+
+            {isAdmin && (
+                <Card>
+                    <CardHeader>
+                        <div className="flex justify-between">
+                            <div className="flex flex-col gap-2">
+                                <CardTitle>Contatos de Email 📧</CardTitle>
+                                <CardDescription>
+                                    Gerencie os emails de contato da organização
+                                </CardDescription>
+                            </div>
+
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button>Adicionar Email</Button>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>
+                                            Adicionar novo email
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Adicione um email de contato para a organização.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+
+                                    <div className="flex flex-col gap-3">
+                                        <Input
+                                            type="email"
+                                            placeholder="Digite o email"
+                                            value={newEmail}
+                                            onChange={(e) => setNewEmail(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel disabled={loading}>
+                                            Cancelar
+                                        </AlertDialogCancel>
+
+                                        <AlertDialogAction
+                                            onClick={handleAddEmail}
+                                            disabled={loading || !newEmail}
+                                        >
+                                            Adicionar Email
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
+                    </CardHeader>
+
+                    <CardContent>
+                        {emails.length === 0 ? (
+                            <p className="text-sm text-muted-foreground">
+                                Nenhum email adicionado ainda. Clique em "Adicionar Email" para começar.
+                            </p>
+                        ) : (
+                            <div className="space-y-2">
+                                {emails.map((email) => (
+                                    <div
+                                        key={email}
+                                        className="flex items-center justify-between p-3 bg-secondary rounded-lg border border-border"
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <Mail className="w-4 h-4 text-primary" />
+                                            <span className="text-sm text-foreground">{email}</span>
+                                        </div>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => handleRemoveEmail(email)}
+                                            className="text-destructive hover:bg-destructive/10"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </Button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            )}
         </div>
     )
 }
