@@ -34,7 +34,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-const menuItems = [
+const baseMenuItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
@@ -45,6 +45,9 @@ const menuItems = [
     url: "/dashboard/campaign",
     icon: Megaphone,
   },
+]
+
+const adminMenuItems = [
   {
     title: "Configurações",
     url: "/dashboard/configurations",
@@ -56,6 +59,9 @@ export function AppSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const { data: session } = useSession()
+  
+  const isAdmin = session?.user?.role === "admin"
+  const menuItems = isAdmin ? [...baseMenuItems, ...adminMenuItems] : baseMenuItems
 
   const handleLogout = async () => {
     await authClient.signOut()
