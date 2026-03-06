@@ -13,7 +13,6 @@ import type { Organization } from "@/lib/organization.interface"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
-import { useSession } from "@/lib/auth-client"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,21 +37,16 @@ const createOrganizationSchema = z.object({
 })
 
 export default function CampaignPage() {
-  const { data: session } = useSession()
+
   const [organizations, setOrganizations] = useState<Organization[]>([])
 
   const [name, setName] = useState("")
   const [imageUrl, setImageUrl] = useState("")
   const [loading, setLoading] = useState(false)
 
-  // Verificar se o usuário é admin
-  const isAdmin = session?.user?.role === "admin"
-
   useEffect(() => {
-    if (isAdmin) {
-      coletarOrganizacoes()
-    }
-  }, [isAdmin])
+    coletarOrganizacoes()
+  }, [])
 
   async function coletarOrganizacoes() {
     try {
@@ -110,33 +104,6 @@ export default function CampaignPage() {
     } finally {
       setLoading(false)
     }
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold tracking-tight">
-              Configurações
-            </h1>
-            <p className="text-muted-foreground">
-              Você não tem permissão para acessar esta página
-            </p>
-          </div>
-        </div>
-        <Card>
-          <CardContent className="pt-8 pb-8">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-foreground mb-2">Acesso Restrito</h3>
-              <p className="text-muted-foreground">
-                Apenas administradores podem gerenciar as configurações. Entre em contato com um administrador para obter acesso.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    )
   }
 
   return (
