@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Plus, ChevronLeft, ChevronRight, Search, MessageCircle } from "lucide-react";
+import { Loader2, Plus, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import DisparoAtivoModal from "@/app/dashboard/campaign/components/modal"
 
 import {
