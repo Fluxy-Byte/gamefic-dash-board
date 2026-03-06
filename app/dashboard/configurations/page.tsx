@@ -68,7 +68,7 @@ export default function CampaignPage() {
     })
 
     if (!validation.success) {
-      const errorMessage = validation.error.errors[0]?.message
+      const errorMessage = validation.error.message
       toast.error(errorMessage || "Erro de validação")
       return
     }

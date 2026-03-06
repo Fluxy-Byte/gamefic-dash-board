@@ -92,7 +92,7 @@ export default function Details({ id }: { id: string }) {
         })
 
         if (!validation.success) {
-            const errorMessage = validation.error.errors[0]?.message
+            const errorMessage = validation.error.message
             toast.error(errorMessage || "Erro de validação")
             return
         }
@@ -132,7 +132,7 @@ export default function Details({ id }: { id: string }) {
         })
 
         if (!validation.success) {
-            const errorMessage = validation.error.errors[0]?.message
+            const errorMessage = validation.error.message
             toast.error(errorMessage || "Erro de validação")
             return
         }
