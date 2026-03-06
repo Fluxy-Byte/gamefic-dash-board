@@ -202,56 +202,8 @@ export default function DashboardPage() {
 
   return (
     <div className="w-full min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-purple-500/20 bg-background/95 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center">
-              <MessageCircle className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-foreground">Fluxy</h1>
-              <p className="text-xs text-muted-foreground">Gerenciador de Agentes IA</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 text-sm">
-              <span className="text-muted-foreground">Bem-vindo,</span>
-              <span className="font-semibold text-foreground">{session?.user?.name}</span>
-            </div>
-
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <LogOut className="w-5 h-5" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className="border-purple-500/20 bg-card">
-                <AlertDialogHeader>
-                  <AlertDialogTitle className="text-foreground">Fazer logout?</AlertDialogTitle>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className="border-purple-500/20">Cancelar</AlertDialogCancel>
-                  <Button
-                    onClick={handleLogout}
-                    className="bg-destructive hover:bg-destructive/90"
-                  >
-                    Logout
-                  </Button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      
+      <main className="max-w-full mx-auto px-2 py-2">
         <div className="space-y-8">
           {/* Welcome Section */}
           <div className="bg-purple-600/10 border border-purple-500/20 rounded-2xl p-8 backdrop-blur">

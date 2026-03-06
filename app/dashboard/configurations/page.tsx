@@ -8,6 +8,9 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card"
+
+import { MonitorCog } from "lucide-react"
+
 import { getOrganizations } from "@/app/services/organizations"
 import type { Organization } from "@/lib/organization.interface"
 import { useEffect, useState } from "react"
@@ -107,79 +110,88 @@ export default function CampaignPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold tracking-tight">
-            Configurações
-          </h1>
-          <p className="text-muted-foreground">
-            Gerencie suas configurações de Waba, agentes de IA e organizações
-          </p>
-        </div>
-      </div>
+    <div className="w-full min-h-screen bg-background">
+      <main className="max-w-full mx-auto px-2 py-2">
+        <div className="space-y-8">
 
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between">
-
-            <div className="flex flex-col gap-2">
-              <CardTitle>Suas Organizações</CardTitle>
-              <CardDescription>
-                Visualize e gerencie todas as suas organizações
-              </CardDescription>
+          {/* Welcome Section */}
+          <div className="bg-purple-600/10 border border-purple-500/20 rounded-2xl p-8 backdrop-blur">
+            <div className="flex items-start justify-between">
+              <div>
+                <h2 className="text-3xl font-bold text-foreground mb-2">
+                  Configurações
+                </h2>
+                <p className="text-muted-foreground max-w-2xl">
+                  Gerencie suas configurações de Waba, agentes de IA e organizações
+                </p>
+              </div>
+              <MonitorCog className="w-12 h-12 text-purple-600/60" />
             </div>
+          </div>
 
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button>Criar organização</Button>
-              </AlertDialogTrigger>
+          <Card>
+            <CardHeader>
+              <div className="flex justify-between">
 
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>
-                    Criar nova organização
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Preencha os dados abaixo para criar sua organização.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-
-                <div className="flex flex-col gap-3">
-                  <Input
-                    placeholder="Nome da organização *"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-
-                  <Input
-                    placeholder="URL da imagem (opcional)"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                  />
+                <div className="flex flex-col gap-2">
+                  <CardTitle>Suas Organizações</CardTitle>
+                  <CardDescription>
+                    Visualize e gerencie todas as suas organizações
+                  </CardDescription>
                 </div>
 
-                <AlertDialogFooter>
-                  <AlertDialogCancel disabled={loading}>
-                    Cancelar
-                  </AlertDialogCancel>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button>Criar organização</Button>
+                  </AlertDialogTrigger>
 
-                  <AlertDialogAction
-                    onClick={handleValidateAndSubmit}
-                    disabled={loading}
-                  >
-                    {loading ? "Criando..." : "Criar organização"}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        </CardHeader>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Criar nova organização
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Preencha os dados abaixo para criar sua organização.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
 
-        <CardContent>
-          <OrganizationComponent organizations={organizations} />
-        </CardContent>
-      </Card>
+                    <div className="flex flex-col gap-3">
+                      <Input
+                        placeholder="Nome da organização *"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+
+                      <Input
+                        placeholder="URL da imagem (opcional)"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                      />
+                    </div>
+
+                    <AlertDialogFooter>
+                      <AlertDialogCancel disabled={loading}>
+                        Cancelar
+                      </AlertDialogCancel>
+
+                      <AlertDialogAction
+                        onClick={handleValidateAndSubmit}
+                        disabled={loading}
+                      >
+                        {loading ? "Criando..." : "Criar organização"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </CardHeader>
+
+            <CardContent>
+              <OrganizationComponent organizations={organizations} />
+            </CardContent>
+          </Card>
+        </div>
+      </main>
     </div>
   )
 }
