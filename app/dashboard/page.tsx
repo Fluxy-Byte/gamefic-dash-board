@@ -262,7 +262,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Filters Section - Reorganized */}
-          <div className="bg-card border border-border rounded-2xl p-6">
+          <div className="bg-card/50 border border-purple-500/20 rounded-2xl p-6 backdrop-blur">
             <div className="space-y-4">
               {/* Main Selects Row */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -272,10 +272,10 @@ export default function DashboardPage() {
                     Organização
                   </label>
                   <Select onValueChange={setIdOrganization}>
-                    <SelectTrigger className="bg-input border-border text-foreground h-10 rounded-lg focus:border-primary focus:ring-primary/20">
+                    <SelectTrigger className="bg-input border-purple-500/20 text-foreground h-10 rounded-lg focus:border-purple-500">
                       <SelectValue placeholder="Selecione uma organização" />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border-border">
+                    <SelectContent className="bg-card border-purple-500/20">
                       <SelectGroup>
                         <SelectLabel className="text-muted-foreground">Organizações</SelectLabel>
                         {organizations?.map((org) => (
@@ -300,10 +300,10 @@ export default function DashboardPage() {
                     }}
                     disabled={isLoadingWabas || wabas.length === 0}
                   >
-                    <SelectTrigger className="bg-input border-border text-foreground h-10 rounded-lg disabled:opacity-50 focus:border-primary focus:ring-primary/20">
+                    <SelectTrigger className="bg-input border-purple-500/20 text-foreground h-10 rounded-lg disabled:opacity-50 focus:border-purple-500">
                       <SelectValue placeholder={isLoadingWabas ? "Carregando agentes..." : "Selecione um agente"} />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border-border">
+                    <SelectContent className="bg-card border-purple-500/20">
                       <SelectGroup>
                         <SelectLabel className="text-muted-foreground">Agentes</SelectLabel>
                         {wabas.length > 0 ? (
@@ -325,7 +325,7 @@ export default function DashboardPage() {
 
               {/* Loading State for Agents */}
               {isLoadingWabas && (
-                <div className="flex items-center gap-2 text-sm text-primary">
+                <div className="flex items-center gap-2 text-sm text-purple-400">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Carregando agentes...
                 </div>
@@ -338,7 +338,7 @@ export default function DashboardPage() {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Total Contacts Card */}
-                <div className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all">
+                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-xl p-6 backdrop-blur hover:border-purple-500/40 transition-all hover:shadow-lg">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Contatos Totais</p>
@@ -347,14 +347,14 @@ export default function DashboardPage() {
                       </h3>
                       <p className="text-xs text-muted-foreground mt-3">Conversas iniciadas</p>
                     </div>
-                    <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
-                      <Users className="w-6 h-6 text-primary-foreground" />
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+                      <Users className="w-6 h-6 text-white" />
                     </div>
                   </div>
                 </div>
 
                 {/* Conversion Rate Card */}
-                <div className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all">
+                <div className="bg-gradient-to-br from-pink-500/10 to-purple-500/10 border border-purple-500/20 rounded-xl p-6 backdrop-blur hover:border-purple-500/40 transition-all hover:shadow-lg">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Conversões</p>
@@ -363,14 +363,14 @@ export default function DashboardPage() {
                       </h3>
                       <p className="text-xs text-muted-foreground mt-3">Conversões conseguidas</p>
                     </div>
-                    <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
-                      <TrendingUp className="w-6 h-6 text-primary-foreground" />
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+                      <TrendingUp className="w-6 h-6 text-white" />
                     </div>
                   </div>
                 </div>
 
                 {/* Engagement Card */}
-                <div className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all">
+                <div className="bg-gradient-to-br from-orange-500/10 to-purple-500/10 border border-purple-500/20 rounded-xl p-6 backdrop-blur hover:border-purple-500/40 transition-all hover:shadow-lg">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Engajamento</p>
@@ -379,8 +379,8 @@ export default function DashboardPage() {
                       </h3>
                       <p className="text-xs text-muted-foreground mt-3">Taxa de conversão</p>
                     </div>
-                    <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
-                      <BarChart3 className="w-6 h-6 text-primary-foreground" />
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+                      <BarChart3 className="w-6 h-6 text-white" />
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -423,12 +423,12 @@ export default function DashboardPage() {
                       {paginatedContacts.map((contact) => (
                         <div
                           key={contact.id}
-                          className="group bg-card border border-border rounded-xl p-5 hover:border-primary hover:shadow-lg transition-all"
+                          className="group bg-card/50 border border-purple-500/20 rounded-xl p-5 backdrop-blur hover:border-purple-500/40 hover:bg-card transition-all hover:shadow-lg"
                         >
                           {/* Contact Header */}
                           <div className="flex items-start gap-3 mb-4">
-                            <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                              <Users className="w-5 h-5 text-primary-foreground" />
+                            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 flex items-center justify-center flex-shrink-0">
+                              <Users className="w-5 h-5 text-white" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <h4 className="font-semibold text-foreground truncate text-sm">
@@ -441,7 +441,7 @@ export default function DashboardPage() {
                             </div>
                           </div>
 
-                          <div className="space-y-2 pb-4 border-b border-border">
+                          <div className="space-y-2 pb-4 border-b border-purple-500/10">
                             {/* Contact Info */}
                             {contact.email && (
                               <p className="text-xs text-muted-foreground flex items-center gap-2 truncate hover:text-foreground transition-colors">
@@ -463,9 +463,9 @@ export default function DashboardPage() {
                             <Drawer direction="right" >
                               <DrawerTrigger asChild>
                                 <Button
-                                  variant="default"
+                                  variant="outline"
                                   size="sm"
-                                  className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
+                                  className="flex-1 bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0"
                                   onClick={() => coletarMensages(String(contact.id), String(waba.agent?.id))}
                                 >
                                   <MessageCircle className="w-4 h-4 mr-2" />
@@ -548,7 +548,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Pagination Controls - Footer */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 bg-secondary border border-border rounded-lg p-4">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 bg-purple-500/5 border border-purple-500/20 rounded-lg p-4">
                       <div className="text-sm text-muted-foreground gap-2 flex flex-col">
                         <span>
                           Página <span className="font-semibold text-foreground">{currentPage}</span> de <span className="font-semibold text-foreground">{totalPages}</span> • Total de <span className="font-semibold text-foreground">{filteredContacts.length}</span> contatos
@@ -557,10 +557,10 @@ export default function DashboardPage() {
                         <div className="flex items-center gap-2">
                           <span className="text-sm text-muted-foreground">Itens por página:</span>
                           <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
-                            <SelectTrigger className="w-24 bg-input border-border text-foreground h-9 focus:border-primary focus:ring-primary/20">
+                            <SelectTrigger className="w-24 bg-input border-purple-500/20 text-foreground h-9">
                               <SelectValue />
                             </SelectTrigger>
-                            <SelectContent className="bg-card border-border">
+                            <SelectContent className="bg-card border-purple-500/20">
                               <SelectGroup>
                                 <SelectItem value="10" className="text-foreground">10</SelectItem>
                                 <SelectItem value="20" className="text-foreground">20</SelectItem>
@@ -578,7 +578,7 @@ export default function DashboardPage() {
                           size="sm"
                           onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                           disabled={currentPage === 1}
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 disabled:opacity-50 disabled:bg-muted"
+                          className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                         >
                           <ChevronLeft className="w-4 h-4 mr-1" />
                           Anterior
@@ -588,7 +588,7 @@ export default function DashboardPage() {
                           size="sm"
                           onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                           disabled={currentPage === totalPages}
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 disabled:opacity-50 disabled:bg-muted"
+                          className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                         >
                           Próxima
                           <ChevronRight className="w-4 h-4 ml-1" />

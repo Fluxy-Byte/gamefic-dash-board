@@ -232,7 +232,7 @@ export default function CampaignPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
-      <div className="border-b border-border bg-background">
+      <div className="border-b border-purple-500/20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
@@ -244,7 +244,7 @@ export default function CampaignPage() {
             <Button 
               disabled={!waba} 
               onClick={() => setOpen(true)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto"
+              className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white w-full sm:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
               Nova campanha
@@ -263,7 +263,7 @@ export default function CampaignPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
         {/* Filters Card */}
-        <Card className="border-border bg-card">
+        <Card className="border-purple-500/20 bg-card/50 backdrop-blur">
           <CardHeader>
             <CardTitle className="text-lg sm:text-xl">Filtros</CardTitle>
             <CardDescription>
@@ -274,14 +274,14 @@ export default function CampaignPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Organization Select */}
               <div className="space-y-2 sm:space-y-3">
-                <label className="text-xs sm:text-sm font-semibold text-foreground block uppercase tracking-wide">
+                <label className="text-xs sm:text-sm font-semibold text-foreground block">
                   Organização
                 </label>
                 <Select onValueChange={setIdOrganization}>
-                  <SelectTrigger className="bg-input border-border text-foreground h-10 sm:h-11 text-sm focus:border-primary focus:ring-primary/20">
+                  <SelectTrigger className="bg-input border-purple-500/20 text-foreground h-10 sm:h-11 text-sm">
                     <SelectValue placeholder="Selecione uma organização" />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-border">
+                  <SelectContent className="bg-card border-purple-500/20">
                     <SelectGroup>
                       <SelectLabel className="text-muted-foreground">Organizações</SelectLabel>
                       {organizations?.map((org) => (
@@ -296,7 +296,7 @@ export default function CampaignPage() {
 
               {/* Agent Select */}
               <div className="space-y-2 sm:space-y-3">
-                <label className="text-xs sm:text-sm font-semibold text-foreground block uppercase tracking-wide">
+                <label className="text-xs sm:text-sm font-semibold text-foreground block">
                   Agente
                 </label>
                 <Select
@@ -306,10 +306,10 @@ export default function CampaignPage() {
                   }}
                   disabled={isLoadingWabas || wabas.length === 0}
                 >
-                  <SelectTrigger className="bg-input border-border text-foreground h-10 sm:h-11 disabled:opacity-50 text-sm focus:border-primary focus:ring-primary/20">
+                  <SelectTrigger className="bg-input border-purple-500/20 text-foreground h-10 sm:h-11 disabled:opacity-50 text-sm">
                     <SelectValue placeholder={isLoadingWabas ? "Carregando agentes..." : "Selecione um agente"} />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-border">
+                  <SelectContent className="bg-card border-purple-500/20">
                     <SelectGroup>
                       <SelectLabel className="text-muted-foreground">Agentes</SelectLabel>
                       {wabas.length > 0 ? (
@@ -330,21 +330,21 @@ export default function CampaignPage() {
 
               {/* Date Filter */}
               <div className="space-y-2 sm:space-y-3">
-                <label className="text-xs sm:text-sm font-semibold text-foreground block uppercase tracking-wide">
+                <label className="text-xs sm:text-sm font-semibold text-foreground block">
                   Data de Envio
                 </label>
                 <Input
                   type="date"
                   value={dateFilter}
                   onChange={(e) => handleDateFilter(e.target.value)}
-                  className="bg-input border-border text-foreground h-10 sm:h-11 focus:border-primary focus:ring-primary/20"
+                  className="bg-input border-purple-500/20 text-foreground h-10 sm:h-11"
                 />
               </div>
             </div>
 
             {/* Loading State for Agents */}
             {isLoadingWabas && (
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-primary mt-4">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-purple-400 mt-4">
                 <Loader2 className="w-4 h-4 animate-spin flex-shrink-0" />
                 Carregando agentes...
               </div>
@@ -523,7 +523,7 @@ export default function CampaignPage() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-4 border-t border-border">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-4 border-t border-purple-500/20">
                   <p className="text-sm text-muted-foreground">
                     Página {currentPage} de {totalPages}
                   </p>
@@ -533,7 +533,7 @@ export default function CampaignPage() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 disabled:opacity-50 disabled:bg-muted"
+                      className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </Button>
@@ -544,7 +544,7 @@ export default function CampaignPage() {
                           variant={currentPage === page ? "default" : "outline"}
                           size="sm"
                           onClick={() => setCurrentPage(page)}
-                          className={currentPage === page ? "bg-primary text-primary-foreground border-0" : "border-border text-foreground hover:bg-secondary"}
+                          className={currentPage === page ? "bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0" : "border-purple-500/20"}
                         >
                           {page}
                         </Button>
@@ -555,7 +555,7 @@ export default function CampaignPage() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 disabled:opacity-50 disabled:bg-muted"
+                      className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-600 text-white border-0 disabled:opacity-50 disabled:bg-gray-400"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </Button>
