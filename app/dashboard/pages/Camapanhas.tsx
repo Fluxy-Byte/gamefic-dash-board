@@ -163,8 +163,9 @@ export default function Campaign() {
 
                   <Button
                     disabled={!waba}
+                    variant={waba ? "default" : "destructive"}
                     onClick={() => setOpen(true)}
-                    className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto"
+                    className="w-full sm:w-auto"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Nova campanha

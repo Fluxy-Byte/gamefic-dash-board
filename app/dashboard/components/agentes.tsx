@@ -14,7 +14,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
+import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,9 +146,7 @@ export default function Agentes(props: Props) {
             ) : (
                 <div className="flex flex-col items-start space-y-2">
                     <h3 className="text-lg font-semibold">Nenhum agente encontrado</h3>
-                    <p className="text-sm text-muted-foreground">
-                        Comece criando seu primeiro agente 🤖🚀
-                    </p>
+                    <Badge>Comece criando seu primeiro agente</Badge>
                 </div>
             )}
         </div>

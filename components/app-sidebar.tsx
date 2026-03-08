@@ -52,7 +52,7 @@ export function AppSidebar() {
       icon: Megaphone,
     }
   ]
-
+  console.log(session?.user)
   if (session?.user.role == "admin") {
     menuItems.push({
       title: "Configurações",

@@ -5,38 +5,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getOrganizationWithIdUser, createNewOrganization, updateOrganization } from "@/lib/organization";
 import { createMember, updateMember } from "@/lib/member";
-import { getUserWithEmail } from "@/lib/user";
-
-export async function GET(req: Request) {
-  try {
-    const session = await auth.api.getSession({
-      headers: req.headers,
-    });
-
-    if (!session || !session.user) {
-      return NextResponse.json(
-        { status: false, organizations: [], message: "Não encontramos a sessão do usuario" },
-        { status: 401 }
-      );
-    }
-
-    const user = session.user;
-
-    const organizations = await getOrganizationWithIdUser(user.id);
-
-    return NextResponse.json({
-      status: true,
-      organizations,
-      message: "Sucesso na consulta"
-    });
-  } catch (e: any) {
-    return NextResponse.json({
-      status: false,
-      organizations: [],
-      message: "Erro interno no servidor"
-    })
-  }
-}
+import { getUserWithEmail, updateRoleUser } from "@/lib/user";
 
 export async function POST(req: Request) {
   try {
@@ -48,7 +17,7 @@ export async function POST(req: Request) {
 
     if (!session || !session.user) {
       return NextResponse.json(
-        { status: false, registerMember: null, message: "Não encontramos a sessão do usuário" },
+        { status: false, member: null, message: "Não encontramos a sessão do usuário" },
         { status: 401 }
       );
     }
@@ -57,7 +26,7 @@ export async function POST(req: Request) {
 
     if (user.role != "admin") {
       return NextResponse.json(
-        { status: false, registerMember: null, message: "Você não tem permissão para criar um membro ou editalo" },
+        { status: false, member: null, message: "Você não tem permissão para criar um membro ou editalo" },
         { status: 401 }
       );
     }
@@ -66,7 +35,7 @@ export async function POST(req: Request) {
 
     if (!usuarioMember) {
       return NextResponse.json(
-        { status: false, registerMember: null, message: "Esse e-mail não foi encontrado" },
+        { status: false, member: null, message: "Esse e-mail não foi encontrado" },
         { status: 401 }
       );
     }
@@ -77,7 +46,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       status: true,
-      registerMember,
+      member: registerMember,
       message: "Sucesso no registro do membro"
     });
   } catch (e: any) {
@@ -86,7 +55,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         status: false,
-        registerMember: null,
+        member: null,
         message: "Erro interno no servidor"
       },
       { status: 500 }
@@ -104,20 +73,32 @@ export async function PUT(req: Request) {
 
     if (!session || !session.user) {
       return NextResponse.json(
-        { status: false, organization: null, message: "Não encontramos a sessão do usuário" },
+        { status: false, member: null, message: "Não encontramos a sessão do usuário" },
         { status: 401 }
       );
     }
 
     const user = session.user;
+    if (user.role != "admin") {
+      return NextResponse.json(
+        { status: false, member: null, message: "Você não tem permissão para criar um membro ou editalo" },
+        { status: 401 }
+      );
+    }
 
-    const organization = await updateMember(
+    const member = await updateMember(
       role, idOrganization, idMember
     );
 
+    const resultUpdateUser = await updateRoleUser(member.userId, role);
+
+    console.log(resultUpdateUser)
+
+    console.log(member)
+
     return NextResponse.json({
       status: true,
-      organization,
+      member,
       message: "Sucesso na atualização"
     });
   } catch (e: any) {
@@ -126,7 +107,7 @@ export async function PUT(req: Request) {
     return NextResponse.json(
       {
         status: false,
-        organization: null,
+        member: null,
         message: "Erro interno no servidor"
       },
       { status: 500 }

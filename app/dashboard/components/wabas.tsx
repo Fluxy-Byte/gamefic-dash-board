@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { z } from "zod"
-
+import { Badge } from "@/components/ui/badge"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -191,9 +191,7 @@ export default function Wabas(prosp: Props) {
                     <div className="flex flex-col items-center justify-center h-auto space-y-4">
                         <div className="text-start">
                             <h3 className="text-lg font-semibold">Nenhum waba encontrada</h3>
-                            <p className="text-sm text-muted-foreground mt-2">
-                                Comece criando seu primeira waba 📱🚀
-                            </p>
+                            <Badge>Comece criando seu primeira waba</Badge>
                         </div>
                     </div>
                 )

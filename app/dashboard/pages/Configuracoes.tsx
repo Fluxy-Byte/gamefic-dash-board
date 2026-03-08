@@ -299,7 +299,12 @@ export default function Configuracao() {
 
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                    <Button>Criar waba</Button>
+                                    <Button
+                                        variant={!idOrganization ? "destructive" : "default"}
+                                        disabled={!idOrganization}
+                                    >
+                                        Criar waba
+                                    </Button>
                                 </AlertDialogTrigger>
 
                                 <AlertDialogContent>
@@ -400,7 +405,12 @@ export default function Configuracao() {
 
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                    <Button>Criar agente</Button>
+                                    <Button
+                                        variant={!idOrganization ? "destructive" : "default"}
+                                        disabled={!idOrganization}
+                                    >
+                                        Criar agente
+                                    </Button>
                                 </AlertDialogTrigger>
 
                                 <AlertDialogContent>
@@ -462,7 +472,12 @@ export default function Configuracao() {
 
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                    <Button>Inserir membro</Button>
+                                    <Button
+                                        variant={!idOrganization ? "destructive" : "default"}
+                                        disabled={!idOrganization}
+                                    >
+                                        Inserir membro
+                                    </Button>
                                 </AlertDialogTrigger>
 
                                 <AlertDialogContent>

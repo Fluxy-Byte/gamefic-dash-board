@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { updateMember } from "@/app/services/member"
+import { Badge } from "@/components/ui/badge"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -149,9 +150,8 @@ export default function Members(props: Props) {
             ) : (
                 <div className="flex flex-col items-start space-y-2">
                     <h3 className="text-lg font-semibold">Nenhum membro encontrado.</h3>
-                    <p className="text-sm text-muted-foreground">
-                        Comece adicionando seu primeiro membro.
-                    </p>
+                    <Badge>Comece adicionando seu primeiro membro.</Badge>
+                    
                 </div>
             )}
         </div>

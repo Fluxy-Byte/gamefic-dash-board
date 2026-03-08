@@ -7,3 +7,14 @@ export async function getUserWithEmail(email: string) {
         }
     })
 }
+
+export async function updateRoleUser(idUSer: string, role: string) {
+    return await prisma.user.update({
+        where: {
+            id: idUSer
+        },
+        data: {
+            role
+        }
+    })
+}

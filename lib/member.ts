@@ -4,6 +4,10 @@ export async function getMemberFilterUser(id: string) {
     return await prisma.member.findFirst({
         where: {
             userId: id
+        },
+        include: {
+            user: true,
+            organization: true
         }
     })
 }
@@ -12,6 +16,10 @@ export async function getMembersFilterIdOrganization(id_organization: string) {
     return await prisma.member.findMany({
         where: {
             organizationId: id_organization
+        },
+        include: {
+            user: true,
+            organization: true
         }
     })
 
