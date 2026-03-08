@@ -36,22 +36,9 @@ import {
 } from "@/components/ui/table"
 
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-import {
     MessageCircle,
     Users,
-
     Phone,
-    Mail,
-    Building2,
-
-
     Loader2,
     Clock,
     ChevronLeft,
@@ -138,7 +125,7 @@ export default function TableContacts({
 
                     <TableBody className="w-full">
                         {paginatedContacts.map((contact: Contact) => (
-                            <Drawer direction="right" >
+                            <Drawer direction="right" key={contact.id} >
                                 <DrawerTrigger asChild>
                                     <TableRow
                                         className=""

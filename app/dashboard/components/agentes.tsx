@@ -22,7 +22,6 @@ import { BotMessageSquare } from "lucide-react";
 
 import type { Agent } from "@/lib/database.interface";
 import { updateAgent } from "@/app/services/agent";
-import { StringXor } from "next/dist/compiled/webpack/webpack";
 
 interface Props {
     agents: Agent[];
@@ -56,7 +55,7 @@ export default function Agentes(props: Props) {
         });
 
         if (!validation.success) {
-            toast.error(validation.error.errors[0]?.message || "Erro de validação");
+            toast.error(validation.error.message || "Erro de validação");
             return;
         }
 

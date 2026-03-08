@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Upload, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import { Upload, AlertCircle, CheckCircle2 } from 'lucide-react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -10,24 +10,23 @@ import {
     AlertDialogDescription,
     AlertDialogHeader,
     AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+} from '@/components/ui/alert-dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Card } from '@/components/ui/card'
-import { getTemplates } from '@/app/services/templates'
-import Fundo from "@/public/Fundo-Whats.jpg"
-import { createCampaing } from "@/app/services/campaings"
-import { toast } from 'sonner'
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card } from '@/components/ui/card';
+import { getTemplates } from '@/app/services/templates';
+import Fundo from "@/public/Fundo-Whats.jpg";
+import { createCampaing } from "@/app/services/campaings";
+import { toast } from 'sonner';
 
 interface Contact {
     phone: string
@@ -250,13 +249,9 @@ export default function DisparoAtivoModal({
         if (!payload) return
 
         try {
-            // Aqui você chama sua API
             console.log('Payload a enviar:', payload)
-            // const response = await fetch('/api/disparo', { method: 'POST', body: JSON.stringify(payload) })
-            // if (!response.ok) throw new Error('Erro ao enviar')
 
             const result = await createCampaing(payload)
-
 
             if (result.status == true) {
                 toast.success("Sucesso ao carregar campanha para disparo")

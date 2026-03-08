@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-
+import { useAppContext } from "@/app/services/context";
 import {
   Sidebar,
   SidebarContent,
@@ -34,28 +34,32 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-const menuItems = [
-  {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Campaign",
-    url: "/dashboard/campaign",
-    icon: Megaphone,
-  },
-  {
-    title: "Configurações",
-    url: "/dashboard/configurations",
-    icon: Cog,
-  },
-]
-
 export function AppSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const { data: session } = useSession()
+  const { setPageAcess } = useAppContext()
+
+  const menuItems = [
+    {
+      title: "Dashboard",
+      name: "contatos",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "Campaign",
+      name: "campanha",
+      icon: Megaphone,
+    }
+  ]
+
+  if (session?.user.role == "admin") {
+    menuItems.push({
+      title: "Configurações",
+      name: "configuracao",
+      icon: Cog,
+    })
+  }
 
   const handleLogout = async () => {
     await authClient.signOut()
@@ -82,11 +86,13 @@ export function AppSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url}>
+                  <SidebarMenuButton asChild isActive={pathname === item.name}>
+                    <button
+                      onClick={() => setPageAcess(item.name)}
+                    >
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </Link>
+                    </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

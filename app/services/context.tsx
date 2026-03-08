@@ -8,10 +8,16 @@ import type { Waba, Contact, Agent } from "@/lib/database.interface";
 interface AppContextType {
   wabas: Waba[]
   waba: Waba | null
-  count: number
-  isLoading: boolean
   setWabas: (wabas: Waba[]) => void
   setWaba: (waba: Waba | null) => void
+
+  setPageAcess: (page: string) => void
+  pageAcess: string
+
+  count: number
+
+  isLoading: boolean
+
   organizations: any
   idOrganization: string | null
   setIdOrganization: (id: string | null) => void
@@ -27,6 +33,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const { data: organizations } = authClient.useListOrganizations();
   const [count, setCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pageAcess, setPageAcess] = useState<string>("contatos");
 
   const [idOrganization, setIdOrganization] = useState<string | null>(null);
 
@@ -59,6 +66,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setWabas,
         waba,
         setWaba,
+        pageAcess,
+        setPageAcess,
         count,
         isLoading,
         organizations,

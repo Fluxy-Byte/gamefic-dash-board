@@ -4,7 +4,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getOrganizationWithIdUser, createNewOrganization, updateOrganization } from "@/lib/organization";
-import { createMember } from "@/lib/member";
+import { createMember, updateMember } from "@/lib/member";
+import { getUserWithEmail } from "@/lib/user";
 
 export async function GET(req: Request) {
   try {
@@ -39,7 +40,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { name, slug, logo } = await req.json();
+    const { email, idOrganization, role } = await req.json();
 
     const session = await auth.api.getSession({
       headers: req.headers,
@@ -47,27 +48,37 @@ export async function POST(req: Request) {
 
     if (!session || !session.user) {
       return NextResponse.json(
-        { status: false, organization: null, message: "Não encontramos a sessão do usuário" },
+        { status: false, registerMember: null, message: "Não encontramos a sessão do usuário" },
         { status: 401 }
       );
     }
 
     const user = session.user;
 
-    const organization = await createNewOrganization(
-      name,
-      slug,
-      logo ?? ""
-    );
-
-    if (organization) {
-      await createMember(organization.id, 'user', user.id)
+    if (user.role != "admin") {
+      return NextResponse.json(
+        { status: false, registerMember: null, message: "Você não tem permissão para criar um membro ou editalo" },
+        { status: 401 }
+      );
     }
+
+    const usuarioMember = await getUserWithEmail(email)
+
+    if (!usuarioMember) {
+      return NextResponse.json(
+        { status: false, registerMember: null, message: "Esse e-mail não foi encontrado" },
+        { status: 401 }
+      );
+    }
+
+    const registerMember = await createMember(
+      idOrganization, role, usuarioMember.id
+    );
 
     return NextResponse.json({
       status: true,
-      organization,
-      message: "Sucesso na criação"
+      registerMember,
+      message: "Sucesso no registro do membro"
     });
   } catch (e: any) {
     console.error(e);
@@ -75,7 +86,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         status: false,
-        organization: null,
+        registerMember: null,
         message: "Erro interno no servidor"
       },
       { status: 500 }
@@ -85,7 +96,7 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const { name, slug, logo, idOrganization } = await req.json();
+    const { role, idOrganization, idMember } = await req.json();
 
     const session = await auth.api.getSession({
       headers: req.headers,
@@ -100,11 +111,8 @@ export async function PUT(req: Request) {
 
     const user = session.user;
 
-    const organization = await updateOrganization(
-      name,
-      slug,
-      logo ?? "",
-      idOrganization
+    const organization = await updateMember(
+      role, idOrganization, idMember
     );
 
     return NextResponse.json({

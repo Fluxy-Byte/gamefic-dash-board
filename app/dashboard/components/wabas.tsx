@@ -1,7 +1,7 @@
 "use client"
 
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod"
 
 import {
@@ -63,7 +63,7 @@ export default function Wabas(prosp: Props) {
         })
 
         if (!validation.success) {
-            const errorMessage = validation.error.errors[0]?.message
+            const errorMessage = validation.error.message
             toast.error(errorMessage || "Erro de validação")
             return
         }
